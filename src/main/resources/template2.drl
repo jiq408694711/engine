@@ -1,0 +1,18 @@
+template header
+ruleId
+ifCondition
+package com.chengdu.jiq.drools1
+import java.util.Map;
+import java.lang.Math;
+import org.apache.commons.lang3.time.DateUtils;
+global java.util.Set passRuleSet;
+global com.example.drools.engine.engine.initializer.GeneralDataInitializer dataInitializer;
+global com.example.drools.engine.engine.initializer.StreamDataFilter dataFilter;
+template "tmp1"
+rule "drools_@{ruleId}"
+    when
+        @{ifCondition}
+    then
+        passRuleSet.add("@{ruleId}");
+end
+end template

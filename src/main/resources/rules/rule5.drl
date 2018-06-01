@@ -1,0 +1,19 @@
+package com.chengdu.jiq.drools1
+import com.example.drools.engine.test.service.RuleService;
+import java.util.Map;
+import java.lang.Math;
+global RuleService ruleService;
+
+rule "Calculate Variance"
+when
+    $data : Map()
+    (or Number(Math.max(doubleValue, doubleValue * 4) > 7 ) from accumulate(
+            Map($investAmount : this["investAmount"]) from ruleService.selectInvestRecords($data),
+            count(1))
+    Number(doubleValue in (3000.5, 3000, 1000)) from accumulate(
+                Map($investAmount : this["investAmount"]) from ruleService.selectInvestRecords($data),
+                max($investAmount)))
+then
+    // the variance of the test scores is $v
+    System.out.println("规则中打印日志：校验通过55555555555!");
+end
