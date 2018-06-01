@@ -1,5 +1,4 @@
 package com.chengdu.jiq.drools1
-//import com.chengdu.jiq.model.bo.UserDataModel;
 import com.example.drools.engine.test.service.RuleService;
 import java.util.Map;
 import java.lang.Math;
@@ -9,8 +8,6 @@ global RuleService ruleService;
 rule "Calculate Variance"
 when
     $data : Map();
-//    UserDataModel(context["investAmount"] > 1000);
-//    UserDataModel(context["firstInvest"] == true);
     Map(this["investAmount"] > Math.min(this["age"] * 30, this["level"] * 100));
     Map(this["realNameTime"] < DateUtils.addDays(this["registerTime"], 10));
     $data2 : Map(this["investTotalCount"] > 1000 || this["investAmount"] > 1000) from ruleService.initConditionData2($data, "investTotalCount", "investAmount");
