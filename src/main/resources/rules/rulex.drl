@@ -1,0 +1,31 @@
+package com.chengdu.jiq.drools1
+import java.util.Map;
+import java.lang.Math;
+import org.apache.commons.lang3.time.DateUtils;
+global java.util.Set passRuleSet;
+global com.example.drools.engine.engine.initializer.GeneralDataInitializer dataInitializer;
+global com.example.drools.engine.engine.initializer.StreamDataFilter dataFilter;
+rule "drools_rule_123412"
+when
+$data: Map();
+Map(this["actionType"] == "INVEST");
+Map(this["investAmount"] > 10000);
+Map(this["investPlan"] in ("33221", "33222"));
+Map(this["cellPhone"] str[startsWith] "181");
+Map(this["registerTime"] > DateUtils.parseDate("2018-01-01 00:00:00", "yyyy-MM-dd HH:mm:ss") && < DateUtils.parseDate("2018-06-01 00:00:00", "yyyy-MM-dd HH:mm:ss")) from dataInitializer.initialize($data, "registerTime");
+Map(this["registerChannel"] in ("channelA", "channelB")) from dataInitializer.initialize($data, "registerChannel");
+Map(this["bindCardTime"] <= DateUtils.addDays(this["registerTime"], 20)) from dataInitializer.initialize($data, "bindCardTime", "registerTime");
+Map(this["hasRealName"] == true || this["hasBindCard"] == true) from dataInitializer.initialize($data, "hasRealName", "hasBindCard");
+Map(this["investAmount"] > 10000);
+Number(doubleValue > 50000) from accumulate(
+	Map(this["investAmount"] > 10000, $investAmount: this["investAmount"]) from dataFilter.filter($data, "STREAM_INVEST", "", null, null, null),
+	sum($investAmount));
+Number(doubleValue > 3) from accumulate(
+	Map(this["investAmount"] > 1000) from dataFilter.filter($data, "STREAM_INVEST", "LAST_DAYS", 7, null, null),
+	count(1));
+Number(doubleValue > 0) from accumulate(
+	Map(this["investTime"] <= DateUtils.addDays(this["registerTime"], 20), this["investAmount"] > 10000) from dataFilter.filter($data, "STREAM_INVEST", "AHEAD_LENGTH", 1, null, null),
+	count(1));
+then
+passRuleSet.add("rule_123412");
+end
