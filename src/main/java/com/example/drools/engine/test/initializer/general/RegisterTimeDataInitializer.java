@@ -16,10 +16,8 @@ public class RegisterTimeDataInitializer extends AbstractDataInitializer {
     public String dataKey() {
         return "registerTime";
     }
-
     @Autowired
     private UserInfoRepository userInfoRepository;
-
     @Override
     public Object initialize(Map<String, Object> data) throws Exception {
         if (!data.containsKey("aId") || data.get("aId") == null) {

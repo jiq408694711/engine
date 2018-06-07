@@ -26,10 +26,8 @@ public class InvestStreamDataFilter extends AbstractStreamFilter {
     public String streamKey() {
         return "STREAM_INVEST";
     }
-
     @Autowired
     private UserInvestMessageRepository uimRepository;
-
     @Override
     public List<Map<String, Object>> filter(Map<String, Object> data, Date beginDate, Date endDate, Integer limit) {
         if (!data.containsKey("aId") || data.get("aId") == null) {
